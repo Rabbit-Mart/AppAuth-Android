@@ -24,6 +24,17 @@ apply from: '../config/style.gradle'
 apply from: '../config/coverage.gradle'
 apply from: '../config/javadoc.gradle'
 
+def githubProperties = new Properties()
+githubProperties.load(new FileInputStream(rootProject.file("github.properties")))
+
+def getVersionName = { ->
+    return "1.0.0"  // Replace with version Name
+}
+
+def getArtificatId = { ->
+    return "AppAuth-Android" // Replace with library name ID
+}
+
 artifacts {
     archives sourcesJar
     archives javadocJar
@@ -33,8 +44,24 @@ publishing {
     publications {
         release(MavenPublication) {
             groupId 'com.github.AmrMasoud068'
-            artifactId 'AppAuth-Android'
-            version '1.0.0'
+            artifactId getArtificatId()
+            version getVersionName()
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            /** Configure path of your package repository on Github
+             *  Replace GITHUB_USERID with your/organisation Github userID and REPOSITORY with the repository name on GitHub
+             */
+            url = uri("https://maven.pkg.github.com/Rabbit-Mart/REPOSITORY")
+
+            credentials {
+                /**Create github.properties in root project folder file with gpr.usr=GITHUB_USER_ID  & gpr.key=PERSONAL_ACCESS_TOKEN**/
+                username = githubProperties['gpr.usr']
+                password = githubProperties['gpr.key']
+            }
         }
     }
 }
