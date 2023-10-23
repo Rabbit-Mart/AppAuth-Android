@@ -46,7 +46,7 @@ android {
 }
 
 dependencies {
-    implementation project(':library')
+    implementation project(':OAuth')
     implementation "androidx.appcompat:appcompat:${project.androidXVersions.appcompat}"
     implementation "androidx.annotation:annotation:${project.androidXVersions.annotation}"
     implementation "com.google.android.material:material:${project.googleVersions.material}"
