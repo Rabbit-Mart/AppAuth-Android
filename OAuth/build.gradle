@@ -1,0 +1,56 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+apply from: '../config/android-common.gradle'
+
+
+def getVersionName = { ->
+    return "1.0.9"  // Replace with version Name
+}
+
+def getArtificatId = { ->
+    return "oauth" // Replace with library name ID
+}
+
+project.archivesBaseName = getArtificatId()
+
+android.testOptions {
+    unitTests.includeAndroidResources = true
+}
+
+dependencies {
+    api "androidx.browser:browser:${project.androidXVersions.browser}"
+    implementation "androidx.annotation:annotation:${project.androidXVersions.annotation}"
+    implementation "androidx.appcompat:appcompat:${project.androidXVersions.appCompat}"
+    apply from: '../config/testdeps.gradle', to:it
+}
+
+apply from: '../config/style.gradle'
+apply from: '../config/coverage.gradle'
+apply from: '../config/javadoc.gradle'
+
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId 'com.rabbitmart.libraries'
+            artifactId getArtificatId()
+            version getVersionName()
+            artifact("$buildDir/outputs/aar/${getArtificatId()}-release.aar")
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+
+            url = uri("https://maven.pkg.github.com/Rabbit-Mart/AppAuth-Android")
+
+            credentials {
+                username = 'AmrMasoud068'
+                password = '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'
+            }
+        }
+    }
+}
