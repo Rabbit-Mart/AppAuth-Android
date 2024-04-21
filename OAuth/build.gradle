@@ -6,7 +6,7 @@ apply from: '../config/android-common.gradle'
 
 
 def getVersionName = { ->
-    return "1.0.9"  // Replace with version Name
+    return "1.0.10"  // Replace with version Name
 }
 
 def getArtificatId = { ->
